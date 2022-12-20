@@ -44,6 +44,13 @@ def decryptRegistry():
     if count == 0:
         print("No entries found in Registry")
     else:
+        # Check if master password is set
+        session_key2 = winreg.OpenKey(winreg.HKEY_CURRENT_USER, 'SOFTWARE\\Martin Prikryl\\WinSCP 2\\Configuration\\Security')
+        masterPassword = get_value(session_key2, 'UseMasterPassword')
+        if masterPassword == 1:
+            print("Master Password Set, unable to recover saved passwords!")
+            return
+
         print("Found {c} entries in Registry. Extracting Credentials...".format(c=count-1))
         print("[=======REGISTRY=======]")
         for index in range(1,count):
