@@ -45,6 +45,7 @@ def decryptRegistry():
         print("No entries found in Registry")
     else:
         print("Found {c} entries in Registry. Extracting Credentials...".format(c=count-1))
+        print("[=======REGISTRY=======]")
         for index in range(1,count):
             session = winreg.EnumKey(sessions_key, index)
             session_key = winreg.OpenKey(sessions_key, session)
@@ -62,6 +63,12 @@ def decryptIni(filepath):
     config = configparser.ConfigParser(strict=False)
     config.read(filepath)
 
+    # Stop extracting creds if Master Password is set
+    if(int(config.get('Configuration\\Security','UseMasterPassword')) == 1):
+        print("Master Password Set, unable to recover saved passwords!")
+        return
+
+    print("[=======WinSCP.ini=======]")
     for section in config.sections():
         if config.has_option(section, 'HostName'):
             hostName = config.get(section, 'HostName')
