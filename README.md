@@ -8,8 +8,8 @@ Default file locations are:
 ## Usage
 You can either specify a file path if you know the exact path to an existing WinSCP.ini file or you let the tool itself look if any credentials are stored in the default locations.
 ```python3
-winscp.py
-winscp.py <path-to-file>
+python WinSCPPwdDump.py
+python WinSCPPwdDump.py <path-to-file>
 ```
 
 ## About
