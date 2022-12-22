@@ -7,6 +7,7 @@ import winreg
 PW_MAGIC = 0xA3
 PW_FLAG  = 0xFF
 
+
 def getConfig(filePath=""):
     """
     Scans the system and the registry for WinSCP configurations and extracts credentials.
@@ -36,6 +37,7 @@ def getConfig(filePath=""):
         else:
             print("No WinSCP.ini file found in default locations")
 
+
 # ==================== Hanndle Configs ====================
 def decryptRegistry():
     print("Looking for WinSCP creds in Registry...")
@@ -53,7 +55,7 @@ def decryptRegistry():
 
         print("Found {c} entries in Registry. Extracting Credentials...".format(c=count-1))
         print("[=======REGISTRY=======]")
-        for index in range(1,count):
+        for index in range(1, count):
             session = winreg.EnumKey(sessions_key, index)
             session_key = winreg.OpenKey(sessions_key, session)
             hostName = get_value(session_key, 'HostName')
@@ -66,12 +68,13 @@ def decryptRegistry():
             sectionName = unquote(session)
             printCreds(sectionName, hostName, userName, decPassword)
 
+
 def decryptIni(filepath):
     config = configparser.ConfigParser(strict=False)
     config.read(filepath)
 
     # Stop extracting creds if Master Password is set
-    if(int(config.get('Configuration\\Security','UseMasterPassword')) == 1):
+    if (int(config.get('Configuration\\Security', 'UseMasterPassword')) == 1):
         print("Master Password Set, unable to recover saved passwords!")
         return
 
@@ -88,18 +91,21 @@ def decryptIni(filepath):
             sectionName = unquote(section)
             printCreds(sectionName, hostName, userName, decPassword)
 
+
 def get_value(session_key, str) -> str:
     try:
         value = winreg.QueryValueEx(session_key, str)[0]
     except Exception as e:
         value = ''
     return value
-        
+
+
 def printCreds(sectionName, hostName, userName, decPassword):
     print("====={s}=====".format(s=sectionName))
     print("HostName: {s}".format(s=hostName))
     print("UserName: {s}".format(s=userName))
     print("Password: {s}\n".format(s=decPassword))
+
 
 # ==================== Decrypt Password ====================
 def decryptPasswd(host: str, username: str, password: str) -> str:
@@ -113,7 +119,7 @@ def decryptPasswd(host: str, username: str, password: str) -> str:
 
     pwFlag, passBytes = dec_next_char(passBytes)
     pwLength = 0
-    
+
     # extract password length and trim the passbytes
     if pwFlag == PW_FLAG:
         _, passBytes = dec_next_char(passBytes)
@@ -132,6 +138,7 @@ def decryptPasswd(host: str, username: str, password: str) -> str:
         clearpass = clearpass[len(key):]
     return clearpass
 
+
 def dec_next_char(passBytes) -> tuple[int, bytes]:
     """
     Decrypts the first byte of the password and returns the decrypted byte and the remaining bytes.
@@ -147,6 +154,7 @@ def dec_next_char(passBytes) -> tuple[int, bytes]:
     b = passBytes[1]
     passBytes = passBytes[2:]
     return ~(((a << 4) + b) ^ PW_MAGIC) & 0xff, passBytes
+
 
 if __name__ == '__main__':
     if len(sys.argv) == 2:
