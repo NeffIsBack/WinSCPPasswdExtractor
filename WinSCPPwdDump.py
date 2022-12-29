@@ -66,7 +66,8 @@ def decryptRegistry():
             else:
                 decPassword = "NO_PASSWORD_FOUND"
             sectionName = unquote(session)
-            printCreds(sectionName, hostName, userName, decPassword)
+            hostNameEscaped = unquote(hostName)
+            printCreds(sectionName, hostNameEscaped, userName, decPassword)
 
 
 def decryptIni(filepath):
@@ -89,7 +90,8 @@ def decryptIni(filepath):
             else:
                 decPassword = "NO_PASSWORD_FOUND"
             sectionName = unquote(section)
-            printCreds(sectionName, hostName, userName, decPassword)
+            hostNameEscaped = unquote(hostName)
+            printCreds(sectionName, hostNameEscaped, userName, decPassword)
 
 
 def get_value(session_key, str) -> str:
