@@ -1,7 +1,8 @@
 # WinSCP Password Extractor
-WinSCP stores ssh session passwords in an encrypted format in either the registry or a file called WinSCP.ini.
-This python script tries to gather all credentials stored on the current Windows System.
-Default file locations are:
+WinSCP stores ssh session passwords in an encoded format in either the registry or a file called WinSCP.ini.
+This python script searches in the winscp default locations to extract stored credentials.
+
+These default file locations are:
 - %APPDATA%\WinSCP.ini
 - %USER%\Documents\WinSCP.ini
 
