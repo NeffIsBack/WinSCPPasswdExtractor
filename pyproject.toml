@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "WinSCPPasswdExtractor"
+version = "1.0.0"
+description = "Extract WinSCP Credentials from any Windows System or winscp config file"
+authors = ["Alexander Neff <alex99.neff@gmx.de>"]
+license = "MIT"
+readme = "README.md"
+packages = [
+    { include = "WinSCPPasswdExtractor" },
+]
+
+[tool.poetry.scripts]
+WinSCPPasswdExtractor = "WinSCPPasswdExtractor.WinSCPPasswdExtractor:run"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -163,9 +163,11 @@ def dec_next_char(passBytes) -> tuple[int, bytes]:
     passBytes = passBytes[2:]
     return ~(((a << 4) + b) ^ PW_MAGIC) & 0xff, passBytes
 
-
-if __name__ == '__main__':
+def run():
     if len(sys.argv) == 2:
         getConfig(sys.argv[1])
     else:
         getConfig()
+
+if __name__ == '__main__':
+    run()
