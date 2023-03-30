@@ -6,11 +6,26 @@ These default file locations are:
 - %APPDATA%\WinSCP.ini
 - %USER%\Documents\WinSCP.ini
 
+## Installation
+WinSCPPasswdExtractor is available on pypi.org. Therefore it is recommended to install this tool with pipx:
+```python3
+pipx install WinSCPPasswdExtractor
+```
+Alternatively you could install it with pip or simply download the file and run it.
+
 ## Usage
 You can either specify a file path if you know the exact path to an existing WinSCP.ini file or you let the tool itself look if any credentials are stored in the default locations.
+
+With pipx:
 ```python3
-python WinSCPPwdDump.py
-python WinSCPPwdDump.py <path-to-file>
+WinSCPPasswdExtractor
+WinSCPPasswdExtractor <path-to-winscp-file>
+```
+
+Manually downloaded:
+```python3
+python WinSCPPasswdExtractor.py
+python WinSCPPasswdExtractor.py <path-to-winscp-file>
 ```
 
 ## About
