@@ -2,7 +2,10 @@ import configparser
 import os
 import sys
 from urllib.parse import unquote
-import winreg
+try:
+    import winreg
+except ImportError:
+    _winregAvailable = False
 
 PW_MAGIC = 0xA3
 PW_FLAG  = 0xFF
@@ -25,7 +28,10 @@ def getConfig(filePath=""):
             decryptIni(filePath)
     else:
         print("No file path provided. Looking for WinSCP creds on the System...")
-        decryptRegistry()
+        if _winregAvailable:
+            decryptRegistry()
+        else:
+            print("Unable to import winreg. Skipping registry extraction.")
         if os.path.isfile("C:\\Users\\{u}\\AppData\\Roaming\\WinSCP.ini".format(u=os.getlogin())):
             filePath = "C:\\Users\\{u}\\AppData\\Roaming\\WinSCP.ini".format(u=os.getlogin())
             print("WinSCP.ini file found in {f}. Extracting Credentials...".format(f=filePath))
