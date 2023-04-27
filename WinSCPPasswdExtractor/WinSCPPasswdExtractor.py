@@ -1,6 +1,9 @@
 import configparser
 import os
 import sys
+import importlib.metadata
+import argparse
+from argparse import RawTextHelpFormatter
 from urllib.parse import unquote
 try:
     import winreg
@@ -163,11 +166,40 @@ def dec_next_char(passBytes) -> tuple[int, bytes]:
     passBytes = passBytes[2:]
     return ~(((a << 4) + b) ^ PW_MAGIC) & 0xff, passBytes
 
+
+def printBanner():
+    __version__ = importlib.metadata.version("WinSCPPasswdExtractor")
+    print(f"""
+ __          ___        _____  _____ _____  _____                          _ ______      _                  _             
+ \ \        / (_)      / ____|/ ____|  __ \|  __ \                        | |  ____|    | |                | |            
+  \ \  /\  / / _ _ __ | (___ | |    | |__) | |__) |_ _ ___ _____      ____| | |__  __  _| |_ _ __ __ _  ___| |_ ___  _ __ 
+   \ \/  \/ / | | '_ \ \___ \| |    |  ___/|  ___/ _` / __/ __\ \ /\ / / _` |  __| \ \/ / __| '__/ _` |/ __| __/ _ \| '__|
+    \  /\  /  | | | | |____) | |____| |    | |  | (_| \__ \__ \\ V  V / (_| | |____ >  <| |_| | | (_| | (__| || (_) | |   
+     \/  \/   |_|_| |_|_____/ \_____|_|    |_|   \__,_|___/___/ \_/\_/ \__,_|______/_/\_\\__|_|  \__,_|\___|\__\___/|_|   
+                                                                                                                                                                                                                                                                                           
+                        Extract WinSCP Credentials from any Windows System or winscp config file
+                                                    Made by NeffIsBack
+                                                      Version: {__version__}
+""")
+
+
+def gen_cli_args():
+    example_text = """Example Usage:
+    WinSCPPasswdExtractor
+    WinSCPPasswdExtractor WinSCP.ini
+    """
+    parser = argparse.ArgumentParser(prog='WinSCPPasswdExtractor', epilog=example_text, formatter_class=RawTextHelpFormatter)
+
+    parser.add_argument('-v', '--version', action='version', version='Current Version: %(prog)s 2.0')
+    parser.add_argument('--path', help="Specify a Path to the WinSCP config file to extract credentials directly. (Default: None)")
+
+    return parser.parse_args()
+
 def run():
-    if len(sys.argv) == 2:
-        getConfig(sys.argv[1])
-    else:
-        getConfig()
+    args = gen_cli_args()
+    printBanner()
+
+    getConfig(args.path)
 
 if __name__ == '__main__':
     run()
