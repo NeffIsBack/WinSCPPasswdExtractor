@@ -1,3 +1,4 @@
+![Supported Python versions](https://img.shields.io/badge/python-3.7+-blue.svg) [![Twitter](https://img.shields.io/twitter/follow/al3x_n3ff?label=al3x_n3ff&style=social)](https://twitter.com/intent/follow?screen_name=al3x_n3ff)
 # WinSCP Password Extractor
 WinSCP stores ssh session passwords in an encoded format in either the registry or a config file called WinSCP.ini.
 
