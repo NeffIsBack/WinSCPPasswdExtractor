@@ -7,6 +7,7 @@ from argparse import RawTextHelpFormatter
 from urllib.parse import unquote
 try:
     import winreg
+    _winregAvailable = True
 except ImportError:
     _winregAvailable = False
 
@@ -69,6 +70,8 @@ def decryptRegistry():
             session_key = winreg.OpenKey(sessions_key, session)
             hostName = get_value(session_key, 'HostName')
             userName = get_value(session_key, 'UserName')
+            if not userName:
+                userName = "NO_USERNAME_FOUND"
             password = get_value(session_key, 'Password')
             if password:
                 decPassword = decryptPasswd(hostName, userName, password)
@@ -92,7 +95,10 @@ def decryptIni(filepath):
     for section in config.sections():
         if config.has_option(section, 'HostName'):
             hostName = config.get(section, 'HostName')
-            userName = config.get(section, 'UserName')
+            if config.has_option(section, 'UserName'):
+                userName = config.get(section, 'UserName')
+            else:
+                userName = "NO_USERNAME_FOUND"
             if config.has_option(section, 'Password'):
                 encPassword = config.get(section, 'Password')
                 decPassword = decryptPasswd(hostName, userName, encPassword)
@@ -169,7 +175,7 @@ def dec_next_char(passBytes) -> tuple[int, bytes]:
 
 def printBanner():
     __version__ = importlib.metadata.version("WinSCPPasswdExtractor")
-    print(f"""
+    print(rf"""
  __          ___        _____  _____ _____  _____                          _ ______      _                  _             
  \ \        / (_)      / ____|/ ____|  __ \|  __ \                        | |  ____|    | |                | |            
   \ \  /\  / / _ _ __ | (___ | |    | |__) | |__) |_ _ ___ _____      ____| | |__  __  _| |_ _ __ __ _  ___| |_ ___  _ __ 
