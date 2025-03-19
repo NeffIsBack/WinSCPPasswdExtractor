@@ -111,7 +111,7 @@ def decryptIni(filepath):
 def get_value(session_key, str) -> str:
     try:
         value = winreg.QueryValueEx(session_key, str)[0]
-    except Exception as e:
+    except Exception:
         value = ''
     return value
 
