@@ -2,7 +2,7 @@
 # WinSCP Password Extractor
 WinSCP stores ssh session passwords in an encoded format in either the registry or a config file called WinSCP.ini.
 
-This python script searches in the WinSCP default locations to extract stored credentials for the current user, when executed locally on the target. If a WinSCP.ini config file is already present the script can decode stored credentials as seen below. To gather WinSCP credentials from a remote target or a range of targets there is a module present for the pentesting Tool [CrackMapExec](https://github.com/Porchetta-Industries/CrackMapExec) called "winscp_dump".
+This python script searches in the WinSCP default locations to extract stored credentials for the current user, when executed locally on the target. If a WinSCP.ini config file is already present the script can decode stored credentials as seen below. To gather WinSCP credentials from a remote target or a range of targets there is a module present for the pentesting Tool [NetExec](https://github.com/Pennyw0rth/NetExec) called "winscp".
 
 These default locations are:
 - registry

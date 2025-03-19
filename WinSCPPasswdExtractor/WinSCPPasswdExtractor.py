@@ -1,6 +1,5 @@
 import configparser
 import os
-import sys
 import importlib.metadata
 import argparse
 from argparse import RawTextHelpFormatter
@@ -190,13 +189,14 @@ def printBanner():
 
 
 def gen_cli_args():
+    __version__ = importlib.metadata.version("WinSCPPasswdExtractor")
     example_text = """Example Usage:
     WinSCPPasswdExtractor
     WinSCPPasswdExtractor WinSCP.ini
     """
     parser = argparse.ArgumentParser(prog='WinSCPPasswdExtractor', epilog=example_text, formatter_class=RawTextHelpFormatter)
 
-    parser.add_argument('-v', '--version', action='version', version='Current Version: %(prog)s 2.0')
+    parser.add_argument('-v', '--version', action='version', version=f'Current Version: %(prog)s {__version__}')
     parser.add_argument('--path', help="Specify a Path to the WinSCP config file to extract credentials directly. (Default: None)")
 
     return parser.parse_args()
