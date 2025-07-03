@@ -4,6 +4,7 @@ import importlib.metadata
 import argparse
 from argparse import RawTextHelpFormatter
 from urllib.parse import unquote
+from Registry import Registry
 try:
     import winreg
     _winregAvailable = True
@@ -14,7 +15,7 @@ PW_MAGIC = 0xA3
 PW_FLAG  = 0xFF
 
 
-def getConfig(filePath=""):
+def getConfig(filePath="", is_registry_hive=False):
     """
     Scans the system and the registry for WinSCP configurations and extracts credentials.
     By Default it will look for credentials in the registry and WinSCP.ini files in ~/Documents and ~/AppData/Roaming.
@@ -27,8 +28,11 @@ def getConfig(filePath=""):
     if filePath:
         print("Looking for WinSCP creds in {f}...".format(f=filePath))
         if os.path.isfile(filePath):
-            print("WinSCP.ini file found in {f}. Extracting Credentials...".format(f=filePath))
-            decryptIni(filePath)
+            if is_registry_hive:
+                decryptHiveFile(filePath)
+            else:
+                print("WinSCP.ini file found in {f}. Extracting Credentials...".format(f=filePath))
+                decryptIni(filePath)
     else:
         print("No file path provided. Looking for WinSCP creds on the System...")
         if _winregAvailable:
@@ -107,6 +111,31 @@ def decryptIni(filepath):
             hostNameEscaped = unquote(hostName)
             printCreds(sectionName, hostNameEscaped, userName, decPassword)
 
+def decryptHiveFile(filepath):
+    print(f"[======={os.path.basename(filepath)}=======]")
+    try:
+        reg = Registry.Registry(filepath)
+    except Registry.RegistryParse.ParseException:
+        print("Error loading registry hive. Are you sure this is a valid Hive file?")
+        return
+
+    try:
+        key = reg.open("Software\\Martin Prikryl\\WinSCP 2\\Sessions")
+    except Registry.RegistryKeyNotFoundException:
+        print("Couldn't find WinSCP Sessions key in the provided registry hive file")
+        return
+
+    for session_key in key.subkeys():
+        sessionName = session_key.name()
+        try:
+            hostName = session_key.value('HostName').value()
+            userName = session_key.value('UserName').value()
+            encPassword = session_key.value('Password').value()
+            decPassword = decryptPasswd(hostName, userName, encPassword)
+            printCreds(sessionName, hostName, userName, decPassword)
+
+        except Registry.RegistryValueNotFoundException:
+            pass
 
 def get_value(session_key, str) -> str:
     try:
@@ -198,6 +227,7 @@ def gen_cli_args():
 
     parser.add_argument('-v', '--version', action='version', version=f'Current Version: %(prog)s {__version__}')
     parser.add_argument('--path', help="Specify a Path to the WinSCP config file to extract credentials directly. (Default: None)")
+    parser.add_argument('-r', '--registry', action='store_true', help='Specified file is a registry hive (NTUSER.DAT)')
 
     return parser.parse_args()
 
@@ -205,7 +235,7 @@ def run():
     args = gen_cli_args()
     printBanner()
 
-    getConfig(args.path)
+    getConfig(args.path, args.registry)
 
 if __name__ == '__main__':
     run()

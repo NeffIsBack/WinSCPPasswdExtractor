@@ -9,6 +9,8 @@ These default locations are:
 - %APPDATA%\WinSCP.ini
 - %USER%\Documents\WinSCP.ini
 
+Alternatively, a registry hive can be decrypted locally if it has been exported from the target (`NTUSER.DAT` file from the user home folder).
+
 ## Installation
 WinSCPPasswdExtractor is available on pypi.org. Therefore it is recommended to install this tool with pipx:
 ```python3
@@ -17,18 +19,21 @@ pipx install WinSCPPasswdExtractor
 Alternatively you could install it with pip or simply download the file and run it.
 
 ## Usage
-You can either specify a file path if you know the exact path to an existing WinSCP.ini file or you let the tool itself look if any credentials are stored in the default locations.
+You can either specify a file path if you know the exact path to an existing WinSCP.ini file or you let the tool itself look if any credentials are stored in the default locations. If the provided file is a recovered registry hive, pass the `-r` or `--registry` flag.
 
 With pipx:
 ```python3
 WinSCPPasswdExtractor
 WinSCPPasswdExtractor <path-to-winscp-file>
+WinSCPPasswdExtractor --registry <path-to-ntuser-hive-file>
 ```
 
 Manually downloaded:
 ```python3
 python WinSCPPasswdExtractor.py
 python WinSCPPasswdExtractor.py <path-to-winscp-file>
+python WinSCPPasswdExtractor.py --registry <path-to-ntuser-hive-file>
+
 ```
 
 ## About
