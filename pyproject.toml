@@ -1,8 +1,8 @@
 [project]
 name = "WinSCPPasswdExtractor"
-version = "1.1.3"
-description = "Extract WinSCP Credentials from any Windows System or winscp config file"
-authors = [{ name = "Alexander Neff", email = "alex99.neff@gmx.de" }, { name = "Antoine Vacher", email = "devel@tigre-bleu.net" }]
+version = "1.1.2"
+description = "Extract WinSCP Credentials from any Windows System, winscp config file or recovered user registry hive file"
+authors = [{ name = "Alexander Neff", email = "alex99.neff@gmx.de" }]
 license = "MIT"
 readme = "README.md"
 requires-python = ">=3.7,<4.0"
@@ -20,3 +20,6 @@ WinSCPPasswdExtractor = "WinSCPPasswdExtractor.WinSCPPasswdExtractor:run"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.dependencies]
+registry = "^0.4.2"
