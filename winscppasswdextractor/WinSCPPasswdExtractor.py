@@ -127,15 +127,19 @@ def decryptHiveFile(filepath):
 
     for session_key in key.subkeys():
         sessionName = session_key.name()
+        hostName = session_key.value('HostName').value()
         try:
-            hostName = session_key.value('HostName').value()
             userName = session_key.value('UserName').value()
-            encPassword = session_key.value('Password').value()
-            decPassword = decryptPasswd(hostName, userName, encPassword)
-            printCreds(sessionName, hostName, userName, decPassword)
-
         except Registry.RegistryValueNotFoundException:
-            pass
+            userName = "NO_USERNAME_FOUND"
+        try:
+            encPassword = session_key.value('Password').value()
+        except Registry.RegistryValueNotFoundException:
+            decPassword = "NO_PASSWORD_FOUND"
+        else:
+            decPassword = decryptPasswd(hostName, userName, encPassword)
+        printCreds(sessionName, hostName, userName, decPassword)
+
 
 def get_value(session_key, str) -> str:
     try:
