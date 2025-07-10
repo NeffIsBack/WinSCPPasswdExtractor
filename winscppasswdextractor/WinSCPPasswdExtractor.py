@@ -127,7 +127,10 @@ def decryptHiveFile(filepath):
 
     for session_key in key.subkeys():
         sessionName = session_key.name()
-        hostName = session_key.value('HostName').value()
+        try:
+            hostName = session_key.value('HostName').value()
+        except Registry.RegistryValueNotFoundException:
+            continue  # Skip if HostName is not found
         try:
             userName = session_key.value('UserName').value()
         except Registry.RegistryValueNotFoundException:
