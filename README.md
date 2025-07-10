@@ -24,15 +24,15 @@ You can either specify a file path if you know the exact path to an existing Win
 With pipx:
 ```python3
 WinSCPPasswdExtractor
-WinSCPPasswdExtractor <path-to-winscp-file>
-WinSCPPasswdExtractor --registry <path-to-ntuser-hive-file>
+WinSCPPasswdExtractor --path <path-to-winscp-file>
+WinSCPPasswdExtractor --path <path-to-ntuser-hive-file> --registry
 ```
 
 Manually downloaded:
 ```python3
 python WinSCPPasswdExtractor.py
-python WinSCPPasswdExtractor.py <path-to-winscp-file>
-python WinSCPPasswdExtractor.py --registry <path-to-ntuser-hive-file>
+python WinSCPPasswdExtractor.py --path <path-to-winscp-file>
+python WinSCPPasswdExtractor.py --path <path-to-ntuser-hive-file> --registry
 
 ```
 
