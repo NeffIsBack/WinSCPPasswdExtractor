@@ -6,16 +6,13 @@ authors = [{ name = "Alexander Neff", email = "alex99.neff@gmx.de" }]
 license = "MIT"
 readme = "README.md"
 requires-python = ">=3.7,<4.0"
-packages = [
-    { include = "WinSCPPasswdExtractor" },
-]
 
 [project.urls]
 homepage = "https://github.com/NeffIsBack/WinSCPPasswdExtractor"
 repository = "https://github.com/NeffIsBack/WinSCPPasswdExtractor"
 
 [project.scripts]
-WinSCPPasswdExtractor = "WinSCPPasswdExtractor.WinSCPPasswdExtractor:run"
+WinSCPPasswdExtractor = "winscppasswdextractor.WinSCPPasswdExtractor:run"
 
 [build-system]
 requires = ["poetry-core"]
