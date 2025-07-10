@@ -1,6 +1,6 @@
 [project]
 name = "WinSCPPasswdExtractor"
-version = "1.1.2"
+version = "1.2.0"
 description = "Extract WinSCP Credentials from any Windows System, winscp config file or recovered user registry hive file"
 authors = [{ name = "Alexander Neff", email = "alex99.neff@gmx.de" }]
 license = "MIT"
